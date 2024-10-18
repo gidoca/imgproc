@@ -7,7 +7,7 @@ namespace ansi_color {
 static void print_pixel(Pixel pixel, std::ostream& ostream) {
   ostream << "\033[48;2;" << (unsigned)pixel.r_non_linear() << ";"
           << (unsigned)pixel.g_non_linear() << ";"
-          << (unsigned)pixel.b_non_linear() << "m \033[0m";
+          << (unsigned)pixel.b_non_linear() << "m ";
 }
 
 static void reset(std::ostream& ostream) { ostream << "\033[0m"; }
