@@ -27,10 +27,14 @@ static void write_padding(std::ofstream& stream, size_t n_bytes) {
     }
 }
 
+static size_t calculate_padding(size_t count) {
+    return pixel_size * count % sizeof(uint32_t);
+}
+
 template<typename I>
 static void write_pixel_row(std::ofstream& stream, I begin, I end) {
     auto count = std::distance(begin, end);
-    auto padding = pixel_size * count % sizeof(uint32_t);
+    auto padding = calculate_padding(count);
 
     for(auto i = begin; i != end; i++) {
         write_pixel(stream, *i);
