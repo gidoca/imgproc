@@ -19,4 +19,5 @@ ${BINDIR}/write_mandelbrot "${CURRENTTESTDIR}/mandelbrot.bmp"
 diff "${CURRENTTESTDIR}/mandelbrot.bmp" "${TESTDIR}/mandelbrot.bmp"
 
 ${BINDIR}/image_test
+${BINDIR}/image_iterator_test
 

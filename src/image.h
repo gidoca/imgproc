@@ -40,7 +40,7 @@ class Image {
       auto height = pixels.size();
       _data.reserve(_width * height);
       for (auto const& input_row : pixels) {
-        if (input_row.size() != _width) throw "Inconsisten image dimensions";
+        if (input_row.size() != _width) throw "Inconsistent image dimensions";
 
         _data.insert(end(_data), begin(input_row), end(input_row));
       }
