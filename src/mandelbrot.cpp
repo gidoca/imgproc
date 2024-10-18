@@ -43,17 +43,15 @@ complex coord_to_complex(Coordinate c, Dimension dim) {
 }
 
 void calculate_iteration(ComplexImage& image) {
-  auto& pixels = image.pixels();
-  for (size_t i = 0; i < pixels.size(); ++i) {
-    complex orig_pixel = pixels[i];
-    if (norm(orig_pixel) <=
-        max_norm_iter_value +
-            std::numeric_limits<complex::value_type>::epsilon()) {
-      auto c = coord_to_complex(image.index_to_coord(i), image.dimension());
-      auto out = orig_pixel * orig_pixel + c;
-      pixels[i] = out;
-    }
-  }
+  image.map_inplace(
+      [](complex& pixel, Coordinate coord, ComplexImage const& image) {
+        if (norm(pixel) <=
+            max_norm_iter_value +
+                std::numeric_limits<complex::value_type>::epsilon()) {
+          auto c = coord_to_complex(coord, image.dimension());
+          pixel = pixel * pixel + c;
+        }
+      });
 }
 
 ComplexImage calculate_mandelbrot(size_t num_iterations, Dimension dim) {

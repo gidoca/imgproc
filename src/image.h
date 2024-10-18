@@ -97,6 +97,14 @@ class Image {
 
   Coordinate index_to_coord(size_t i) const { return {.x = i % _width, .y = i / _width}; }
 
+  void map_inplace(auto callable) {
+    size_t index = 0;
+    for (auto& pixel : pixels()) {
+      callable(pixel, index_to_coord(index), const_cast<Image const&>(*this));
+      index++;
+    }
+  }
+
  private:
   std::vector<PixelType> _data;
   size_t _width = 0;
