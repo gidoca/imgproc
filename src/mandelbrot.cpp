@@ -49,17 +49,18 @@ pixel::PixelF32HSV color_lookup(size_t iteration, size_t num_iterations) {
 
 image::ImageF32HSV calculate_mandelbrot(size_t num_iterations, Dimension dim) {
   image::ImageF32HSV out{dim};
-  out.map_inplace([num_iterations](auto& pixel, Coordinate coord, auto const& image) {
-    const auto c = coord_to_complex(coord, image.dimension());
-    complex val = 0;
-    size_t iteration = 0;
-    for (; iteration < num_iterations; ++iteration) {
-      if (has_escaped(val)) break;
-      val = calculate_iteration(val, c);
-    }
+  out.map_inplace(
+      [num_iterations](auto& pixel, Coordinate coord, auto const& image) {
+        const auto c = coord_to_complex(coord, image.dimension());
+        complex val = 0;
+        size_t iteration = 0;
+        for (; iteration < num_iterations; ++iteration) {
+          if (has_escaped(val)) break;
+          val = calculate_iteration(val, c);
+        }
 
-    pixel = color_lookup(iteration, num_iterations);
-  });
+        pixel = color_lookup(iteration, num_iterations);
+      });
   return out;
 }
 

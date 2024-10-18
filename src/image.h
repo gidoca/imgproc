@@ -22,10 +22,10 @@ struct Dimension {
 };
 
 struct Coordinate {
-    size_t x;
-    size_t y;
+  size_t x;
+  size_t y;
 
-    bool operator==(Coordinate const& other) const = default;
+  bool operator==(Coordinate const& other) const = default;
 };
 
 template <typename P>
@@ -90,14 +90,17 @@ class Image {
 
   Dimension dimension() const { return {.width = width(), .height = height()}; }
 
-  Coordinate index_to_coord(size_t i) const { return {.x = i % _width, .y = i / _width}; }
+  Coordinate index_to_coord(size_t i) const {
+    return {.x = i % _width, .y = i / _width};
+  }
 
   auto map_pixels(auto callable) const {
     using OutPixelType = decltype(callable(PixelType{}));
 
     std::vector<OutPixelType> out_pixels;
     out_pixels.reserve(num_pixels());
-    std::transform(_data.begin(), _data.end(), std::back_inserter(out_pixels), callable);
+    std::transform(_data.begin(), _data.end(), std::back_inserter(out_pixels),
+                   callable);
     return Image<OutPixelType>{dimension(), std::move(out_pixels)};
   }
 

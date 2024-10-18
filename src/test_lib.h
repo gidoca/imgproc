@@ -1,11 +1,11 @@
 #pragma once
 
-#include "assert.h"
-
 #include <concepts>
 #include <exception>
 #include <string>
 #include <string_view>
+
+#include "assert.h"
 
 #define TEST_ASSERT(cond)                                 \
   do {                                                    \

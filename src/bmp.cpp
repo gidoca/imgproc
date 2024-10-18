@@ -73,7 +73,8 @@ static uint32_t calculate_file_size(image::Dimension dimension) {
 }
 
 template <typename P>
-static void write_pixel_row(std::ostream& stream, image::RowView<const P> row_view) {
+static void write_pixel_row(std::ostream& stream,
+                            image::RowView<const P> row_view) {
   auto count = std::ranges::distance(row_view.begin(), row_view.end());
   auto padding = calculate_padding(count);
 

@@ -51,7 +51,7 @@ O to_underlying(I in_pixel) {
 
 template <typename T>
 pixel::PixelRGB<T> from_hsv(pixel::PixelHSV<T> pixel) {
-    T h_prime = (pixel.h() >= 300. ? pixel.h() - 360. : pixel.h()) / 360.;
+  T h_prime = (pixel.h() >= 300. ? pixel.h() - 360. : pixel.h()) / 360.;
   auto max = pixel.v();
   auto c = pixel.s() * pixel.v();
   auto min = max - c;

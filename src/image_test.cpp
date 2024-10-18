@@ -23,12 +23,12 @@ static void test_image_copy() {
 }
 
 static void test_index_to_coordinate() {
-    image::ImageU8RGB data{Dimension{2, 4}};
-    TEST_ASSERT((data.index_to_coord(1) == Coordinate{1, 0}));
-    TEST_ASSERT((data.index_to_coord(2) == Coordinate{0, 1}));
-    TEST_ASSERT((data.index_to_coord(3) == Coordinate{1, 1}));
+  image::ImageU8RGB data{Dimension{2, 4}};
+  TEST_ASSERT((data.index_to_coord(1) == Coordinate{1, 0}));
+  TEST_ASSERT((data.index_to_coord(2) == Coordinate{0, 1}));
+  TEST_ASSERT((data.index_to_coord(3) == Coordinate{1, 1}));
 
-    TEST_ASSERT((data.num_pixels() == 2*4));
+  TEST_ASSERT((data.num_pixels() == 2 * 4));
 }
 
 static void test_map_pixels() {
@@ -36,10 +36,9 @@ static void test_map_pixels() {
                             {{0xFF, 0x0, 0xFF}, {0x0, 0xFF, 0xFF}}};
 
   image::ImageU16RGB mapped = data.map_pixels([](pixel::PixelU8RGB pixel) {
-    return pixel::PixelU16RGB{
-    static_cast<uint16_t>(pixel.r() * 2),
-    static_cast<uint16_t>(pixel.g() * 3),
-    static_cast<uint16_t>(pixel.b() * 4)};
+    return pixel::PixelU16RGB{static_cast<uint16_t>(pixel.r() * 2),
+                              static_cast<uint16_t>(pixel.g() * 3),
+                              static_cast<uint16_t>(pixel.b() * 4)};
   });
 
   image::ImageU16RGB expected_output = {
