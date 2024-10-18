@@ -32,17 +32,17 @@ static void read_basic(std::istream& stream, T& t) {
 constexpr size_t pixel_size = 3;
 
 static void write_pixel(std::ostream& stream, Pixel pixel) {
-  write_basic(stream, pixel.r_non_linear());
-  write_basic(stream, pixel.g_non_linear());
   write_basic(stream, pixel.b_non_linear());
+  write_basic(stream, pixel.g_non_linear());
+  write_basic(stream, pixel.r_non_linear());
 }
 
 static Pixel read_pixel(std::istream& stream) {
   Pixel pixel;
 
-  read_basic(stream, pixel.r_non_linear());
-  read_basic(stream, pixel.g_non_linear());
   read_basic(stream, pixel.b_non_linear());
+  read_basic(stream, pixel.g_non_linear());
+  read_basic(stream, pixel.r_non_linear());
 
   return pixel;
 }
