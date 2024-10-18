@@ -16,18 +16,18 @@ struct Pixel {
 
   T data[D];
 
-  bool operator==(Pixel<T, D> const &other) const = default;
+  bool operator==(Pixel<T, D> const& other) const = default;
 };
 
 template <typename T>
 requires std::integral<T> || std::floating_point<T>
 struct PixelRGB : Pixel<T, 3> {
-  T &r() { return this->data[0]; }
-  T &g() { return this->data[1]; }
-  T &b() { return this->data[2]; }
-  T const &r() const { return this->data[0]; }
-  T const &g() const { return this->data[1]; }
-  T const &b() const { return this->data[2]; }
+  T& r() { return this->data[0]; }
+  T& g() { return this->data[1]; }
+  T& b() { return this->data[2]; }
+  T const& r() const { return this->data[0]; }
+  T const& g() const { return this->data[1]; }
+  T const& b() const { return this->data[2]; }
 };
 
 using PixelU8RGB = PixelRGB<uint8_t>;
@@ -36,7 +36,7 @@ struct Dimension {
   size_t width;
   size_t height;
 
-  bool operator==(Dimension const &other) const = default;
+  bool operator==(Dimension const& other) const = default;
 };
 
 template <typename P>
@@ -55,7 +55,7 @@ class Image {
       _width = begin(pixels)->size();
       auto height = pixels.size();
       _data.reserve(_width * height);
-      for (auto const &input_row : pixels) {
+      for (auto const& input_row : pixels) {
         if (input_row.size() != _width) throw "Inconsisten image dimensions";
 
         _data.insert(end(_data), begin(input_row), end(input_row));
@@ -64,14 +64,14 @@ class Image {
   }
 
   Image() = default;
-  Image(Image const &) = default;
-  Image(Image &&) = default;
-  Image &operator=(Image const &) = default;
-  Image &operator=(Image &&) = default;
+  Image(Image const&) = default;
+  Image(Image&&) = default;
+  Image& operator=(Image const&) = default;
+  Image& operator=(Image&&) = default;
 
-  PixelType &at(size_t x, size_t y) { return _data[x + width() * y]; }
+  PixelType& at(size_t x, size_t y) { return _data[x + width() * y]; }
 
-  PixelType const &at(size_t x, size_t y) const {
+  PixelType const& at(size_t x, size_t y) const {
     return _data[x + width() * y];
   }
 
@@ -98,6 +98,9 @@ class Image {
     }
     return rows;
   }
+
+  std::vector<PixelType>& pixels() { return _data; }
+  std::vector<PixelType> const& pixels() const { return _data; }
 
   size_t width() const { return _width; }
 
