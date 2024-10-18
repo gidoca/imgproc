@@ -101,8 +101,7 @@ static void write_dib_header(std::ostream& stream, image::Dimension dimension) {
   write_basic(stream, important_colors);
 }
 
-template <typename I>
-static void write(std::ostream& stream, I const& image) {
+static void write(std::ostream& stream, Image const& image) {
   write_file_header(stream, image.dimension());
   write_dib_header(stream, image.dimension());
   for (const auto& row : image.rows()) {

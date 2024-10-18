@@ -8,6 +8,6 @@ clang++ -std=c++20 -stdlib=libc++ -Wall mandelbrot.cpp -o bin/write_mandelbrot
 ./bin/write_mandelbrot
 diff mandelbrot.bmp mandelbrotref.bmp
 
-clang++ -std=c++20 -stdlib=libc++ -Wall image_test.cpp -o bin/image_test
+clang++ -std=c++20 -stdlib=libc++ -Wall -O2 image_test.cpp -o bin/image_test
 ./bin/image_test
 
