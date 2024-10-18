@@ -4,12 +4,13 @@ SCRIPTDIR=$(dirname "$0")
 BASEDIR="${SCRIPTDIR}/.."
 BUILDDIR="${BASEDIR}/build"
 SRCDIR="${BASEDIR}/src"
-BINDIR="${BUILDDIR}/src"
+BINDIR="${BASEDIR}/bin"
 TESTDIR="${BASEDIR}/testdata"
 CURRENTTESTDIR="${TESTDIR}/current"
 
 cmake -B "${BUILDDIR}" .
 cmake --build "${BUILDDIR}"
+cmake --install "${BUILDDIR}" --prefix "${BASEDIR}"
 
 ${BINDIR}/write_bmp "${CURRENTTESTDIR}/test.bmp"
 diff "${CURRENTTESTDIR}/test.bmp" "${TESTDIR}/test.bmp"
