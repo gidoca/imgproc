@@ -20,4 +20,5 @@ diff "${CURRENTTESTDIR}/mandelbrot.bmp" "${TESTDIR}/mandelbrot.bmp"
 
 ${BINDIR}/image_test
 ${BINDIR}/image_iterator_test
+${BINDIR}/ansi_color_test
 
