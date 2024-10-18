@@ -1,7 +1,5 @@
 #pragma once
 
-#include <concepts>
-
 namespace pixel {
 
 template <typename T, size_t D>
