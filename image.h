@@ -77,13 +77,14 @@ class Image {
   Image& operator=(Image&&) = default;
 
   PixelType& at(size_t x, size_t y) { return _data[x + width() * y]; }
-
   PixelType const& at(size_t x, size_t y) const {
     return _data[x + width() * y];
   }
 
-  RowType row(size_t y) { return RowType{&at(0, y), width()}; }
+  PixelType& at(Coordinate coord) { return at(coord.x, coord.y); }
+  PixelType const& at(Coordinate coord) const { return at(coord.x, coord.y); }
 
+  RowType row(size_t y) { return RowType{&at(0, y), width()}; }
   ConstRowType row(size_t y) const { return ConstRowType{&at(0, y), width()}; }
 
   // TODO don't return vector, implement without allocation

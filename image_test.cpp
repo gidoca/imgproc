@@ -55,7 +55,9 @@ static void test_image_copy() {
   image::ImageU8RGB data2 = data;
 
   TEST_ASSERT((data2.dimension() == image::Dimension{2, 2}));
-  TEST_ASSERT((data.at(1, 1) == data2.at(1, 1)));
+  TEST_ASSERT((data2.at(1, 1) == PixelU8RGB{0x0, 0xFF, 0xFF}));
+  TEST_ASSERT(
+      (data2.at(Coordinate{.x = 1, .y = 1}) == PixelU8RGB{0x0, 0xFF, 0xFF}));
 }
 
 static void test_index_to_coordinate() {
