@@ -93,4 +93,4 @@ class Image {
 
 using ImageU8 = Image<uint8_t>;
 
-}
+}  // namespace image
