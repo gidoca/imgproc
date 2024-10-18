@@ -24,6 +24,23 @@ static void write_padding(std::ofstream& stream, size_t n_bytes) {
     }
 }
 
+template<typename I>
+static void write_pixel_row(std::ofstream& stream, I begin, I end) {
+    auto count = end - begin;
+    auto padding = 3 * count % 4;
+
+    for(auto i = begin; i != end; i++) {
+        write_pixel(stream, *i);
+    }
+
+    write_padding(stream, padding);
+}
+
+template<typename T>
+static void write_pixel_row(std::ofstream& stream, T const& coll) {
+    write_pixel_row(stream, begin(coll), end(coll));
+}
+
 static void write_file_header(std::ofstream& stream, uint32_t filesize, uint32_t data_offset) {
     constexpr std::string_view header("BM");
 
@@ -59,11 +76,8 @@ static void write_dib_header(std::ofstream& stream, uint32_t width, uint32_t hei
 static void write(std::ofstream& stream) {
     write_file_header(stream, 70, 54);
     write_dib_header(stream, 2, 2);
-    write_pixel(stream, {0xFF, 0x0, 0x0});
-    write_pixel(stream, {0x0, 0xFF, 0x0});
-    write_padding(stream, 2);
-    write_pixel(stream, {0x0, 0x0, 0xFF});
-    write_pixel(stream, {0xFF, 0xFF, 0x0});
+    write_pixel_row(stream, std::initializer_list<Pixel>{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}});
+    write_pixel_row(stream, std::initializer_list<Pixel>{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}});
     write_padding(stream, 2);
     stream << std::flush;
 }
