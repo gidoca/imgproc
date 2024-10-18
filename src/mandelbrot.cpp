@@ -15,6 +15,9 @@ using complex = std::complex<float>;
 using ComplexImage = Image<Pixel<complex, 1>>;
 
 static constexpr float max = 2.f;
+static constexpr float max_absolute_iter_value = 2.f;
+static constexpr float max_norm_iter_value =
+    max_absolute_iter_value * max_absolute_iter_value;
 
 bmp::Image tonemap(ComplexImage const& im) {
   bmp::Image out{im.dimension()};
@@ -22,8 +25,8 @@ bmp::Image tonemap(ComplexImage const& im) {
   auto& out_pixels = out.pixels();
   for (size_t i = 0; i < in_pixels.size(); ++i) {
     complex in_pixel = in_pixels[i];
-    out_pixels[i] =
-        norm(in_pixel) > 2.f * 2.f ? colors::u8::black : colors::u8::white;
+    out_pixels[i] = norm(in_pixel) > max_norm_iter_value ? colors::u8::black
+                                                         : colors::u8::white;
   }
   return out;
 }
@@ -43,9 +46,13 @@ void calculate_iteration(ComplexImage& image) {
   auto& pixels = image.pixels();
   for (size_t i = 0; i < pixels.size(); ++i) {
     complex orig_pixel = pixels[i];
-    auto c = coord_to_complex(image.index_to_coord(i), image.dimension());
-    auto out = orig_pixel * orig_pixel + c;
-    pixels[i] = out;
+    if (norm(orig_pixel) <=
+        max_norm_iter_value +
+            std::numeric_limits<complex::value_type>::epsilon()) {
+      auto c = coord_to_complex(image.index_to_coord(i), image.dimension());
+      auto out = orig_pixel * orig_pixel + c;
+      pixels[i] = out;
+    }
   }
 }
 
