@@ -7,17 +7,30 @@
 
 namespace image {
 
-template <typename T>
+template <typename T, size_t D>
 requires std::integral<T> || std::floating_point<T>
 struct Pixel {
-  T r;
-  T g;
-  T b;
+  using ElementType = T;
 
-  bool operator==(Pixel<T> const &other) const = default;
+  static constexpr size_t depth = D;
+
+  T data[D];
+
+  bool operator==(Pixel<T, D> const &other) const = default;
 };
 
-using PixelU8 = Pixel<uint8_t>;
+template <typename T>
+requires std::integral<T> || std::floating_point<T>
+struct PixelRGB : Pixel<T, 3> {
+  T &r() { return this->data[0]; }
+  T &g() { return this->data[1]; }
+  T &b() { return this->data[2]; }
+  T const &r() const { return this->data[0]; }
+  T const &g() const { return this->data[1]; }
+  T const &b() const { return this->data[2]; }
+};
+
+using PixelU8RGB = PixelRGB<uint8_t>;
 
 struct Dimension {
   size_t width;
@@ -26,11 +39,11 @@ struct Dimension {
   bool operator==(Dimension const &other) const = default;
 };
 
-template <typename T>
+template <typename P>
 class Image {
  public:
-  using ElementType = T;
-  using PixelType = Pixel<T>;
+  using PixelType = P;
+  using ElementType = typename PixelType::ElementType;
   using RowType = std::span<PixelType>;
   using ConstRowType = std::span<PixelType const>;
 
@@ -93,10 +106,10 @@ class Image {
   Dimension dimension() const { return {.width = width(), .height = height()}; }
 
  private:
-  std::vector<Pixel<T>> _data;
+  std::vector<PixelType> _data;
   size_t _width = 0;
 };
 
-using ImageU8 = Image<uint8_t>;
+using ImageU8RGB = Image<PixelU8RGB>;
 
 }  // namespace image

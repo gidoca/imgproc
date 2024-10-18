@@ -9,8 +9,8 @@
 
 namespace bmp {
 
-using Pixel = image::PixelU8;
-using Image = image::ImageU8;
+using Pixel = image::PixelU8RGB;
+using Image = image::ImageU8RGB;
 
 template <typename T>
 static void write_basic(std::ostream& stream, T t) {
@@ -23,9 +23,9 @@ static void write_basic(std::ostream& stream, T t) {
 constexpr size_t pixel_size = 3;
 
 static void write_pixel(std::ostream& stream, Pixel pixel) {
-  write_basic(stream, pixel.r);
-  write_basic(stream, pixel.g);
-  write_basic(stream, pixel.b);
+  write_basic(stream, pixel.r());
+  write_basic(stream, pixel.g());
+  write_basic(stream, pixel.b());
 }
 
 static void write_padding(std::ostream& stream, size_t n_bytes) {
