@@ -92,7 +92,7 @@ static uint32_t calculate_file_size(uint32_t width, uint32_t height) {
 
 static void write(std::ofstream& stream) {
   const ImageU8 data = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
-                        {{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}}};
+                        {{0xFF, 0x0, 0xFF}, {0x0, 0xFF, 0xFF}}};
   write_file_header(stream, calculate_file_size(2, 2));
   write_dib_header(stream, 2, 2);
   for (const auto &row : data.rows()) {
