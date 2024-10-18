@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <fstream>
+#include <iterator>
 
 template<typename T>
 static void write_basic(std::ofstream& stream, T t) {
@@ -28,7 +29,7 @@ static void write_padding(std::ofstream& stream, size_t n_bytes) {
 
 template<typename I>
 static void write_pixel_row(std::ofstream& stream, I begin, I end) {
-    auto count = end - begin;
+    auto count = std::distance(begin, end);
     auto padding = pixel_size * count % sizeof(uint32_t);
 
     for(auto i = begin; i != end; i++) {
