@@ -1,3 +1,5 @@
 *.bmp
 /.vscode/
 a.out
+write_bmp
+image_test
