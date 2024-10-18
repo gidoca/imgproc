@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include <fstream>
 #include <iterator>
+#include <ostream>
 
 #include "bit_polyfill.h"
 #include "image.h"
@@ -13,7 +13,7 @@ using Pixel = image::PixelU8;
 using Image = image::ImageU8;
 
 template <typename T>
-static void write_basic(std::ofstream& stream, T t) {
+static void write_basic(std::ostream& stream, T t) {
   if constexpr (std::endian::native == std::endian::big) {
     t = byteswap(t);
   }
@@ -22,13 +22,13 @@ static void write_basic(std::ofstream& stream, T t) {
 
 constexpr size_t pixel_size = 3;
 
-static void write_pixel(std::ofstream& stream, Pixel pixel) {
+static void write_pixel(std::ostream& stream, Pixel pixel) {
   write_basic(stream, pixel.r);
   write_basic(stream, pixel.g);
   write_basic(stream, pixel.b);
 }
 
-static void write_padding(std::ofstream& stream, size_t n_bytes) {
+static void write_padding(std::ostream& stream, size_t n_bytes) {
   for (size_t i = 0; i < n_bytes; i++) {
     write_basic<uint8_t>(stream, 0);
   }
@@ -47,7 +47,7 @@ static uint32_t calculate_file_size(image::Dimension dimension) {
 }
 
 template <typename I>
-static void write_pixel_row(std::ofstream& stream, I begin, I end) {
+static void write_pixel_row(std::ostream& stream, I begin, I end) {
   auto count = std::distance(begin, end);
   auto padding = calculate_padding(count);
 
@@ -59,11 +59,11 @@ static void write_pixel_row(std::ofstream& stream, I begin, I end) {
 }
 
 template <typename T>
-static void write_pixel_row(std::ofstream& stream, T const& coll) {
+static void write_pixel_row(std::ostream& stream, T const& coll) {
   write_pixel_row(stream, begin(coll), end(coll));
 }
 
-static void write_file_header(std::ofstream& stream,
+static void write_file_header(std::ostream& stream,
                               image::Dimension dimension) {
   constexpr std::string_view header("BM");
   constexpr uint32_t reserved = 0;
@@ -75,8 +75,7 @@ static void write_file_header(std::ofstream& stream,
   write_basic(stream, data_offset);
 }
 
-static void write_dib_header(std::ofstream& stream,
-                             image::Dimension dimension) {
+static void write_dib_header(std::ostream& stream, image::Dimension dimension) {
   constexpr uint32_t dib_header_size = 40;
   constexpr uint16_t num_planes = 1;
   constexpr uint16_t bpp = 24;
@@ -102,8 +101,8 @@ static void write_dib_header(std::ofstream& stream,
   write_basic(stream, important_colors);
 }
 
-template <typename S, typename I>
-static void write(S& stream, I const& image) {
+template <typename I>
+static void write(std::ostream& stream, I const& image) {
   write_file_header(stream, image.dimension());
   write_dib_header(stream, image.dimension());
   for (const auto& row : image.rows()) {
