@@ -26,7 +26,8 @@ bit_cast(const From &src) noexcept {
 
 // Polyfill, since std::byteswap is not yet available
 #if __cpp_lib_byteswap < 202110
-template <std::integral T> constexpr T byteswap(T value) noexcept {
+template <std::integral T>
+constexpr T byteswap(T value) noexcept {
   static_assert(std::has_unique_object_representations_v<T>,
                 "T may not have padding bits");
   auto value_representation =
@@ -36,4 +37,4 @@ template <std::integral T> constexpr T byteswap(T value) noexcept {
 }
 #endif
 
-} // namespace std
+}  // namespace std

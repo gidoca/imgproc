@@ -20,8 +20,9 @@ struct Dimension {
   size_t height;
 };
 
-template <typename T> class Image {
-public:
+template <typename T>
+class Image {
+ public:
   using ElementType = T;
   using PixelType = Pixel<T>;
   using RowType = std::span<PixelType>;
@@ -86,7 +87,7 @@ public:
 
   Dimension dimension() const { return {.width = width(), .height = height()}; }
 
-private:
+ private:
   std::vector<Pixel<T>> _data;
   size_t _width = 0;
 };
