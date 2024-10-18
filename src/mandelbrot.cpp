@@ -23,18 +23,11 @@ static constexpr auto epsilon =
     std::numeric_limits<complex::value_type>::epsilon();
 
 bmp::Image tonemap(ComplexImage const& im) {
-  using color_conversion::to_srgb;
-
-  bmp::Image out{im.dimension()};
-  auto const& in_pixels = im.pixels();
-  auto& out_pixels = out.pixels();
-  for (size_t i = 0; i < in_pixels.size(); ++i) {
-    complex in_pixel = in_pixels[i];
-    out_pixels[i] =
-        to_srgb(norm(in_pixel) > max_norm_iter_value ? colors::u8::black
-                                                     : colors::u8::white);
-  }
-  return out;
+  return im.map_pixels([](complex in_pixel) {
+    return color_conversion::to_srgb(norm(in_pixel) > max_norm_iter_value
+                                         ? colors::u8::black
+                                         : colors::u8::white);
+  });
 }
 
 complex relative_pos(Coordinate c, Dimension dim) {

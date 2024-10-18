@@ -40,9 +40,9 @@ class Image {
 
   Image(Dimension dim, std::vector<PixelType> data)
       : _data(std::move(data)), _width(dim.width) {
-    ASSERT(dim.num_elems() == data.size(), "Expected " << dim.num_elems()
-                                                       << " elements but got "
-                                                       << data.size());
+    ASSERT(dim.num_elems() == _data.size(), "Expected " << dim.num_elems()
+                                                        << " elements but got "
+                                                        << data.size());
   }
 
   Image(std::initializer_list<std::initializer_list<PixelType>> pixels) {
@@ -91,7 +91,7 @@ class Image {
 
   Coordinate index_to_coord(size_t i) const { return {.x = i % _width, .y = i / _width}; }
 
-  auto map_pixels(auto callable) {
+  auto map_pixels(auto callable) const {
     using OutPixelType = decltype(callable(PixelType{}));
 
     std::vector<OutPixelType> out_pixels;
