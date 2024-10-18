@@ -3,6 +3,7 @@
 #include <iterator>
 
 #include "bit_polyfill.h"
+#include "image.h"
 
 using std::begin;
 using std::end;
@@ -15,18 +16,12 @@ static void write_basic(std::ofstream& stream, T t) {
     stream.write(reinterpret_cast<char*>(&t), sizeof(t));
 }
 
-struct Pixel {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-};
-
 constexpr size_t pixel_size = 3;
 
-static void write_pixel(std::ofstream& stream, Pixel pixel) {
-    write_basic(stream, pixel.r);
-    write_basic(stream, pixel.g);
-    write_basic(stream, pixel.b);
+static void write_pixel(std::ofstream &stream, PixelU8 pixel) {
+  write_basic(stream, pixel.r);
+  write_basic(stream, pixel.g);
+  write_basic(stream, pixel.b);
 }
 
 static void write_padding(std::ofstream& stream, size_t n_bytes) {
@@ -96,11 +91,11 @@ static uint32_t calculate_file_size(uint32_t width, uint32_t height) {
 }
 
 static void write(std::ofstream& stream) {
-  constexpr Pixel data[2][2] = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
-                                {{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}}};
+  const ImageU8 data = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
+                        {{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}}};
   write_file_header(stream, calculate_file_size(2, 2));
   write_dib_header(stream, 2, 2);
-  for (const auto &row : data) {
+  for (const auto &row : data.rows()) {
     write_pixel_row(stream, row);
   }
     write_padding(stream, 2);
