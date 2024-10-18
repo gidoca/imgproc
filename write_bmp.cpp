@@ -2,8 +2,13 @@
 #include <fstream>
 #include <iterator>
 
+#include "bit_polyfill.h"
+
 template<typename T>
 static void write_basic(std::ofstream& stream, T t) {
+  if constexpr (std::endian::native == std::endian::big) {
+    t = byteswap(t);
+  }
     stream.write(reinterpret_cast<char*>(&t), sizeof(t));
 }
 
