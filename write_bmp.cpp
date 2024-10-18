@@ -12,6 +12,8 @@ struct Pixel {
     uint8_t b;
 };
 
+constexpr size_t pixel_size = 3;
+
 static void write_pixel(std::ofstream& stream, Pixel pixel) {
     write_basic(stream, pixel.r);
     write_basic(stream, pixel.g);
@@ -27,7 +29,7 @@ static void write_padding(std::ofstream& stream, size_t n_bytes) {
 template<typename I>
 static void write_pixel_row(std::ofstream& stream, I begin, I end) {
     auto count = end - begin;
-    auto padding = 3 * count % 4;
+    auto padding = pixel_size * count % sizeof(uint32_t);
 
     for(auto i = begin; i != end; i++) {
         write_pixel(stream, *i);
