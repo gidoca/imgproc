@@ -39,6 +39,13 @@ struct Dimension {
   bool operator==(Dimension const& other) const = default;
 };
 
+struct Coordinate {
+    size_t x;
+    size_t y;
+
+    bool operator==(Coordinate const& other) const = default;
+};
+
 template <typename P>
 class Image {
  public:
@@ -48,7 +55,7 @@ class Image {
   using ConstRowType = std::span<PixelType const>;
 
   explicit Image(Dimension dim)
-      : _width(dim.width), _data(dim.width * dim.height) {}
+      :  _data(dim.width * dim.height), _width(dim.width) {}
 
   Image(std::initializer_list<std::initializer_list<PixelType>> pixels) {
     if (pixels.size() > 0) {
@@ -106,7 +113,11 @@ class Image {
 
   size_t height() const { return _data.size() / _width; }
 
+  size_t num_pixels() const { return _data.size(); }
+
   Dimension dimension() const { return {.width = width(), .height = height()}; }
+
+  Coordinate index_to_coord(size_t i) const { return {.x = i % _width, .y = i / _width}; }
 
  private:
   std::vector<PixelType> _data;
