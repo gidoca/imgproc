@@ -13,7 +13,7 @@ struct PixelIterator {
 
   std::span<P> pixel_buffer;
   std::size_t current_pos;
-  std::size_t stride;
+  difference_type stride;
   std::size_t end_pos;
 
   bool operator==(PixelIteratorEnd) const { return current_pos >= end_pos; }
@@ -50,9 +50,9 @@ struct RowIterator {
 
   std::span<P> pixel_buffer;
   std::size_t current_pos;
-  std::size_t row_stride;
+  difference_type row_stride;
   std::size_t row_data_length;
-  std::size_t column_stride;
+  difference_type column_stride;
   std::size_t end_pos;
 
   bool operator==(RowIteratorEnd) const { return current_pos >= end_pos; }
@@ -79,9 +79,11 @@ RowIterator<P>& operator--(RowIterator<P>& it) {
 
 template <typename P>
 struct RowView {
+  using difference_type = std::ptrdiff_t;
+
   std::span<P> pixel_buffer;
   std::size_t start_pos;
-  std::size_t stride;
+  difference_type stride;
   std::size_t end_pos;
 
   PixelIterator<P> begin() const {
@@ -99,11 +101,13 @@ RowView<P> operator*(RowIterator<P> const& it) {
 
 template <typename P>
 struct ImageView {
+  using difference_type = std::ptrdiff_t;
+
   std::span<P> pixel_buffer;
   std::size_t start_pos;
-  std::size_t row_stride;
+  difference_type row_stride;
   std::size_t row_data_length;
-  std::size_t column_stride;
+  difference_type column_stride;
   std::size_t column_data_length;
 
   RowIterator<const P> cbegin() const {
@@ -127,7 +131,7 @@ ImageView<typename I::PixelType> view(I& image) {
           0,
           1,
           image.width(),
-          image.width(),
+          static_cast<ImageView<typename I::PixelType>::difference_type>(image.width()),
           image.width() * image.height()};
 }
 
@@ -137,7 +141,7 @@ ImageView<const typename I::PixelType> view(I const& image) {
           0,
           1,
           image.width(),
-          image.width(),
+          static_cast<ImageView<const typename I::PixelType>::difference_type>(image.width()),
           image.width() * image.height()};
 }
 
