@@ -1,5 +1,7 @@
 #pragma once
 
+#include "assert.h"
+
 #include <concepts>
 #include <exception>
 #include <string>
@@ -9,6 +11,7 @@
   do {                                                    \
     test_assert((cond), "Test assertion failed: " #cond); \
   } while (false)
+
 #define TEST_ASSERT_THROWS(callable)                                           \
   do {                                                                         \
     test_assert_throws(                                                        \
@@ -32,6 +35,7 @@ template <std::invocable C>
 void test_assert_throws(C&& c, std::string_view msg = "") {
   bool did_throw = false;
   try {
+    disable_print_assert d{};
     c();
   } catch (...) {
     did_throw = true;
