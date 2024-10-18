@@ -4,6 +4,9 @@
 
 #include "bit_polyfill.h"
 
+using std::begin;
+using std::end;
+
 template<typename T>
 static void write_basic(std::ofstream& stream, T t) {
   if constexpr (std::endian::native == std::endian::big) {
@@ -53,14 +56,16 @@ static void write_pixel_row(std::ofstream& stream, T const& coll) {
     write_pixel_row(stream, begin(coll), end(coll));
 }
 
-static void write_file_header(std::ofstream& stream, uint32_t filesize, uint32_t data_offset) {
-    constexpr std::string_view header("BM");
-    constexpr uint32_t reserved = 0;
+constexpr uint32_t data_offset = 54;
 
-    stream << header;
-    write_basic(stream, filesize);
-    write_basic(stream, reserved);
-    write_basic(stream, data_offset);
+static void write_file_header(std::ofstream &stream, uint32_t filesize) {
+  constexpr std::string_view header("BM");
+  constexpr uint32_t reserved = 0;
+
+  stream << header;
+  write_basic(stream, filesize);
+  write_basic(stream, reserved);
+  write_basic(stream, data_offset);
 }
 
 static void write_dib_header(std::ofstream& stream, uint32_t width, uint32_t height) {
@@ -86,11 +91,18 @@ static void write_dib_header(std::ofstream& stream, uint32_t width, uint32_t hei
     write_basic(stream, important_colors);
 }
 
+static uint32_t calculate_file_size(uint32_t width, uint32_t height) {
+  return data_offset + (width * pixel_size + calculate_padding(width)) * height;
+}
+
 static void write(std::ofstream& stream) {
-    write_file_header(stream, 70, 54);
-    write_dib_header(stream, 2, 2);
-    write_pixel_row(stream, std::initializer_list<Pixel>{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}});
-    write_pixel_row(stream, std::initializer_list<Pixel>{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}});
+  constexpr Pixel data[2][2] = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
+                                {{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}}};
+  write_file_header(stream, calculate_file_size(2, 2));
+  write_dib_header(stream, 2, 2);
+  for (const auto &row : data) {
+    write_pixel_row(stream, row);
+  }
     write_padding(stream, 2);
     stream << std::flush;
 }
