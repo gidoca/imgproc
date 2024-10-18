@@ -14,10 +14,12 @@ using complex = std::complex<float>;
 
 using ComplexImage = Image<Pixel<complex, 1>>;
 
-static constexpr float max = 2.f;
-static constexpr float max_absolute_iter_value = 2.f;
-static constexpr float max_norm_iter_value =
+static constexpr auto max = 2.f;
+static constexpr auto max_absolute_iter_value = 2.f;
+static constexpr auto max_norm_iter_value =
     max_absolute_iter_value * max_absolute_iter_value;
+static constexpr auto epsilon =
+    std::numeric_limits<complex::value_type>::epsilon();
 
 bmp::Image tonemap(ComplexImage const& im) {
   bmp::Image out{im.dimension()};
@@ -45,9 +47,7 @@ complex coord_to_complex(Coordinate c, Dimension dim) {
 void calculate_iteration(ComplexImage& image) {
   image.map_inplace(
       [](complex& pixel, Coordinate coord, ComplexImage const& image) {
-        if (norm(pixel) <=
-            max_norm_iter_value +
-                std::numeric_limits<complex::value_type>::epsilon()) {
+        if (norm(pixel) <= max_norm_iter_value + epsilon) {
           auto c = coord_to_complex(coord, image.dimension());
           pixel = pixel * pixel + c;
         }
