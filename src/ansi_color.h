@@ -21,7 +21,7 @@ void reset(std::ostream& ostream) { ostream << "\033[0m"; }
 void print_image(Image const& image, std::ostream& ostream) {
   reset(ostream);
 
-  for (auto row : view(image)) {
+  for (auto row : mirror_vert(view(image))) {
     for (auto pixel : row) {
       print_pixel(pixel, ostream);
     }

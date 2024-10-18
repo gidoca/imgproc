@@ -189,6 +189,16 @@ ImageView<P> mirror_horz(ImageView<P> view) {
 }
 
 template <typename P>
+ImageView<P> mirror_vert(ImageView<P> view) {
+  return {.pixel_buffer = view.pixel_buffer,
+          .start_pos = view.start_pos + (view.column_data_count - 1) * view.column_stride,
+          .row_stride = view.row_stride,
+          .row_data_count = view.row_data_count,
+          .column_stride = -view.column_stride,
+          .column_data_count = view.column_data_count};
+}
+
+template <typename P>
 Image<P> to_image(ImageView<P> view) {
   std::vector<P> pixels;
   const auto dimension = view.dimension();
