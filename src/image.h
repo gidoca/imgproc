@@ -1,10 +1,13 @@
 #pragma once
 
+#include <algorithm>
 #include <concepts>
 #include <cstdint>
+#include <iterator>
 #include <span>
 #include <vector>
 
+#include "assert.h"
 #include "pixel.h"
 
 namespace image {
@@ -14,6 +17,8 @@ struct Dimension {
   size_t height;
 
   bool operator==(Dimension const& other) const = default;
+
+  size_t num_elems() const { return width * height; }
 };
 
 struct Coordinate {
@@ -31,8 +36,14 @@ class Image {
   using RowType = std::span<PixelType>;
   using ConstRowType = std::span<PixelType const>;
 
-  explicit Image(Dimension dim)
-      :  _data(dim.width * dim.height), _width(dim.width) {}
+  explicit Image(Dimension dim) : _data(dim.num_elems()), _width(dim.width) {}
+
+  Image(Dimension dim, std::vector<PixelType> data)
+      : _data(std::move(data)), _width(dim.width) {
+    ASSERT(dim.num_elems() == data.size(), "Expected " << dim.num_elems()
+                                                       << " elements but got "
+                                                       << data.size());
+  }
 
   Image(std::initializer_list<std::initializer_list<PixelType>> pixels) {
     if (pixels.size() > 0) {
@@ -40,7 +51,10 @@ class Image {
       auto height = pixels.size();
       _data.reserve(_width * height);
       for (auto const& input_row : pixels) {
-        if (input_row.size() != _width) throw "Inconsistent image dimensions";
+        ASSERT((input_row.size() == _width),
+               "Inconsistent image dimensions, previous row had width "
+                   << _width << " but got a row with width "
+                   << input_row.size());
 
         _data.insert(end(_data), begin(input_row), end(input_row));
       }
@@ -77,6 +91,15 @@ class Image {
 
   Coordinate index_to_coord(size_t i) const { return {.x = i % _width, .y = i / _width}; }
 
+  auto map_pixels(auto callable) {
+    using OutPixelType = decltype(callable(PixelType{}));
+
+    std::vector<OutPixelType> out_pixels;
+    out_pixels.reserve(num_pixels());
+    std::transform(_data.begin(), _data.end(), std::back_inserter(out_pixels), callable);
+    return Image<OutPixelType>{dimension(), std::move(out_pixels)};
+  }
+
   void map_inplace(auto callable) {
     size_t index = 0;
     for (auto& pixel : pixels()) {
@@ -85,6 +108,8 @@ class Image {
     }
   }
 
+  bool operator==(Image<PixelType> const& other) const = default;
+
  private:
   std::vector<PixelType> _data;
   size_t _width = 0;
@@ -92,6 +117,8 @@ class Image {
 
 using ImageU8RGB = Image<pixel::PixelU8RGB>;
 using ImageU8SRGB = Image<pixel::PixelU8SRGB>;
+using ImageU16RGB = Image<pixel::PixelU16RGB>;
+using ImageU16SRGB = Image<pixel::PixelU16SRGB>;
 using ImageF32RGB = Image<pixel::PixelF32SRGB>;
 using ImageF32SRGB = Image<pixel::PixelF32SRGB>;
 

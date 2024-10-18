@@ -31,6 +31,24 @@ static void test_index_to_coordinate() {
     TEST_ASSERT((data.num_pixels() == 2*4));
 }
 
+static void test_map_pixels() {
+  image::ImageU8RGB data = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
+                            {{0xFF, 0x0, 0xFF}, {0x0, 0xFF, 0xFF}}};
+
+  image::ImageU16RGB mapped = data.map_pixels([](pixel::PixelU8RGB pixel) {
+    return pixel::PixelU16RGB{
+    static_cast<uint16_t>(pixel.r() * 2),
+    static_cast<uint16_t>(pixel.g() * 3),
+    static_cast<uint16_t>(pixel.b() * 4)};
+  });
+
+  image::ImageU16RGB expected_output = {
+      {{2 * 0xFF, 0x0, 0x0}, {0x0, 3 * 0xFF, 0x0}},
+      {{2 * 0xFF, 0x0, 4 * 0xff}, {0x0, 3 * 0xFF, 4 * 0xFF}}};
+
+  TEST_ASSERT(mapped == expected_output);
+}
+
 int main(void) {
   test_image_copy();
   test_image_throws_if_inconsistent_dimension();

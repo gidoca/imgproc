@@ -75,6 +75,8 @@ struct PixelSRGB : Pixel<T, 3> {
 
 using PixelU8RGB = PixelRGB<uint8_t>;
 using PixelU8SRGB = PixelSRGB<uint8_t>;
+using PixelU16RGB = PixelRGB<uint16_t>;
+using PixelU16SRGB = PixelSRGB<uint16_t>;
 using PixelF32RGB = PixelRGB<float>;
 using PixelF32SRGB = PixelSRGB<float>;
 
