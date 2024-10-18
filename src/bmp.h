@@ -7,8 +7,8 @@
 
 namespace bmp {
 
-using Pixel = pixel::PixelU8RGB;
-using Image = image::ImageU8RGB;
+using Pixel = pixel::PixelU8SRGB;
+using Image = image::ImageU8SRGB;
 
 void write(std::ostream& stream, Image const& image);
 

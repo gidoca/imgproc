@@ -1,12 +1,30 @@
 #pragma once
 
+#include <cstdint>
+
 namespace pixel {
+
+template <typename T>
+struct unit_value {
+  static constexpr T value;
+};
+
+template <>
+struct unit_value<uint8_t> {
+  static constexpr uint8_t value = 255;
+};
+
+template <>
+struct unit_value<float> {
+  static constexpr float value = 1.f;
+};
 
 template <typename T, size_t D>
 struct Pixel {
   using ElementType = T;
 
   static constexpr size_t depth = D;
+  static constexpr T unit_value = pixel::unit_value<T>::value;
 
   T data[D];
 
@@ -26,6 +44,8 @@ struct Pixel<T, 1> {
   Pixel(T&& element) { data[0] = std::move(element); }
 
   static constexpr size_t depth = 1;
+  static constexpr T unit_value = pixel::unit_value<T>::value;
+
   T data[1];
 
   bool operator==(Pixel<T, depth> const& other) const = default;
@@ -43,6 +63,19 @@ struct PixelRGB : Pixel<T, 3> {
   T const& b() const { return this->data[2]; }
 };
 
+template <typename T>
+struct PixelSRGB : Pixel<T, 3> {
+  T& r_non_linear() { return this->data[0]; }
+  T& g_non_linear() { return this->data[1]; }
+  T& b_non_linear() { return this->data[2]; }
+  T const& r_non_linear() const { return this->data[0]; }
+  T const& g_non_linear() const { return this->data[1]; }
+  T const& b_non_linear() const { return this->data[2]; }
+};
+
 using PixelU8RGB = PixelRGB<uint8_t>;
+using PixelU8SRGB = PixelSRGB<uint8_t>;
+using PixelF32RGB = PixelRGB<float>;
+using PixelF32SRGB = PixelSRGB<float>;
 
 }  // namespace pixel

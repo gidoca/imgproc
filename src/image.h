@@ -111,5 +111,8 @@ class Image {
 };
 
 using ImageU8RGB = Image<pixel::PixelU8RGB>;
+using ImageU8SRGB = Image<pixel::PixelU8SRGB>;
+using ImageF32RGB = Image<pixel::PixelF32SRGB>;
+using ImageF32SRGB = Image<pixel::PixelF32SRGB>;
 
 }  // namespace image

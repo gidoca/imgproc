@@ -20,9 +20,9 @@ static void write_basic(std::ostream& stream, T t) {
 constexpr size_t pixel_size = 3;
 
 static void write_pixel(std::ostream& stream, Pixel pixel) {
-  write_basic(stream, pixel.r());
-  write_basic(stream, pixel.g());
-  write_basic(stream, pixel.b());
+  write_basic(stream, pixel.r_non_linear());
+  write_basic(stream, pixel.g_non_linear());
+  write_basic(stream, pixel.b_non_linear());
 }
 
 static void write_padding(std::ostream& stream, size_t n_bytes) {
