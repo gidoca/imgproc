@@ -36,7 +36,8 @@ class Image {
   using RowType = std::span<PixelType>;
   using ConstRowType = std::span<PixelType const>;
 
-  explicit Image(Dimension dim) : _data(dim.num_elems()), _width(dim.width) {}
+  explicit Image(Dimension dim, PixelType value = {})
+      : _data(dim.num_elems(), value), _width(dim.width) {}
 
   Image(Dimension dim, std::vector<PixelType> data)
       : _data(std::move(data)), _width(dim.width) {
@@ -117,9 +118,12 @@ class Image {
 
 using ImageU8RGB = Image<pixel::PixelU8RGB>;
 using ImageU8SRGB = Image<pixel::PixelU8SRGB>;
+using ImageU8HSV = Image<pixel::PixelU8HSV>;
 using ImageU16RGB = Image<pixel::PixelU16RGB>;
 using ImageU16SRGB = Image<pixel::PixelU16SRGB>;
+using ImageU16HSV = Image<pixel::PixelU16HSV>;
 using ImageF32RGB = Image<pixel::PixelF32SRGB>;
 using ImageF32SRGB = Image<pixel::PixelF32SRGB>;
+using ImageF32HSV = Image<pixel::PixelF32HSV>;
 
 }  // namespace image

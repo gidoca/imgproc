@@ -73,11 +73,24 @@ struct PixelSRGB : Pixel<T, 3> {
   T const& b_non_linear() const { return this->data[2]; }
 };
 
+template <typename T>
+struct PixelHSV : Pixel<T, 3> {
+  T& h() { return this->data[0]; }
+  T& s() { return this->data[1]; }
+  T& v() { return this->data[2]; }
+  T const& h() const { return this->data[0]; }
+  T const& s() const { return this->data[1]; }
+  T const& v() const { return this->data[2]; }
+};
+
 using PixelU8RGB = PixelRGB<uint8_t>;
 using PixelU8SRGB = PixelSRGB<uint8_t>;
+using PixelU8HSV = PixelHSV<uint8_t>;
 using PixelU16RGB = PixelRGB<uint16_t>;
 using PixelU16SRGB = PixelSRGB<uint16_t>;
+using PixelU16HSV = PixelHSV<uint16_t>;
 using PixelF32RGB = PixelRGB<float>;
 using PixelF32SRGB = PixelSRGB<float>;
+using PixelF32HSV = PixelHSV<float>;
 
 }  // namespace pixel
