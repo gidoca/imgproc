@@ -109,7 +109,6 @@ static void write(S& stream, I const& image) {
   for (const auto& row : image.rows()) {
     write_pixel_row(stream, row);
   }
-  write_padding(stream, 2);
   stream << std::flush;
 }
 
