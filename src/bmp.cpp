@@ -1,10 +1,10 @@
 #include "bmp.h"
 
+#include <bit>
 #include <cstdint>
 #include <iterator>
 #include <ostream>
 
-#include "bit_polyfill.h"
 #include "image.h"
 
 namespace bmp {
