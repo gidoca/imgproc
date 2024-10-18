@@ -64,26 +64,6 @@ class Image {
   RowType row(size_t y) { return RowType{&at(0, y), width()}; }
   ConstRowType row(size_t y) const { return ConstRowType{&at(0, y), width()}; }
 
-  // TODO don't return vector, implement without allocation
-  std::vector<ConstRowType> rows() const {
-    std::vector<ConstRowType> rows;
-    rows.reserve(height());
-    for (size_t i = 0; i < height(); i++) {
-      rows.push_back(row(i));
-    }
-    return rows;
-  }
-
-  // TODO don't return vector, implement without allocation
-  std::vector<RowType> rows() {
-    std::vector<RowType> rows;
-    rows.reserve(height());
-    for (size_t i = 0; i < height(); i++) {
-      rows.push_back(row(i));
-    }
-    return rows;
-  }
-
   std::vector<PixelType>& pixels() { return _data; }
   std::vector<PixelType> const& pixels() const { return _data; }
 

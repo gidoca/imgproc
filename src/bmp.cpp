@@ -6,6 +6,7 @@
 #include <ostream>
 
 #include "image.h"
+#include "image_iterator.h"
 
 namespace bmp {
 
@@ -43,9 +44,9 @@ static uint32_t calculate_file_size(image::Dimension dimension) {
              dimension.height;
 }
 
-template <typename I>
-static void write_pixel_row(std::ostream& stream, I begin, I end) {
-  auto count = std::distance(begin, end);
+template <typename B, typename E>
+static void write_pixel_row(std::ostream& stream, B begin, E end) {
+  auto count = std::ranges::distance(begin, end);
   auto padding = calculate_padding(count);
 
   for (auto i = begin; i != end; i++) {
@@ -57,7 +58,7 @@ static void write_pixel_row(std::ostream& stream, I begin, I end) {
 
 template <typename T>
 static void write_pixel_row(std::ostream& stream, T const& coll) {
-  write_pixel_row(stream, begin(coll), end(coll));
+  write_pixel_row(stream, coll.begin(), coll.end());
 }
 
 static void write_file_header(std::ostream& stream,
@@ -101,7 +102,7 @@ static void write_dib_header(std::ostream& stream, image::Dimension dimension) {
 void write(std::ostream& stream, Image const& image) {
   write_file_header(stream, image.dimension());
   write_dib_header(stream, image.dimension());
-  for (const auto& row : image.rows()) {
+  for (const auto& row : view(image)) {
     write_pixel_row(stream, row);
   }
   stream << std::flush;

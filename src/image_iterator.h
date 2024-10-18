@@ -26,6 +26,13 @@ PixelIterator<P>& operator++(PixelIterator<P>& it) {
 }
 
 template <typename P>
+PixelIterator<P> operator++(PixelIterator<P>& it, int) {
+  auto old_value = it;
+  ++it;
+  return old_value;
+}
+
+template <typename P>
 P const& operator*(PixelIterator<P> const& it) {
   return it.pixel_buffer[it.current_pos];
 }
@@ -55,6 +62,13 @@ template <typename P>
 RowIterator<P>& operator++(RowIterator<P>& it) {
   it.current_pos += it.column_stride;
   return it;
+}
+
+template <typename P>
+RowIterator<P> operator++(RowIterator<P>& it, int) {
+  auto old_value = it;
+  ++it;
+  return old_value;
 }
 
 template <typename P>
