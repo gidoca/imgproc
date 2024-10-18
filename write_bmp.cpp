@@ -8,6 +8,11 @@
 using std::begin;
 using std::end;
 
+namespace bmp{
+
+    using Pixel = image::PixelU8;
+    using Image = image::ImageU8;
+
 template <typename T>
 static void write_basic(std::ofstream& stream, T t) {
   if constexpr (std::endian::native == std::endian::big) {
@@ -18,7 +23,7 @@ static void write_basic(std::ofstream& stream, T t) {
 
 constexpr size_t pixel_size = 3;
 
-static void write_pixel(std::ofstream& stream, PixelU8 pixel) {
+static void write_pixel(std::ofstream& stream, Pixel pixel) {
   write_basic(stream, pixel.r);
   write_basic(stream, pixel.g);
   write_basic(stream, pixel.b);
@@ -92,7 +97,7 @@ static uint32_t calculate_file_size(uint32_t width, uint32_t height) {
 }
 
 static void write(std::ofstream& stream) {
-  const ImageU8 data = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
+  const Image data = {{{0xFF, 0x0, 0x0}, {0x0, 0xFF, 0x0}},
                         {{0xFF, 0x0, 0xFF}, {0x0, 0xFF, 0xFF}}};
   write_file_header(stream, calculate_file_size(2, 2));
   write_dib_header(stream, 2, 2);
@@ -103,7 +108,11 @@ static void write(std::ofstream& stream) {
   stream << std::flush;
 }
 
+}
+
 int main(int argc, char** argv) {
   std::ofstream out("file.bmp", std::ios::binary | std::ios::out);
-  write(out);
+  bmp::write(out);
+  return EXIT_SUCCESS;
 }
+

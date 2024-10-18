@@ -5,6 +5,8 @@
 #include <span>
 #include <vector>
 
+namespace image {
+
 template <typename T>
 requires std::integral<T> || std::floating_point<T>
 struct Pixel {
@@ -36,11 +38,8 @@ class Image {
       _width = begin(pixels)->size();
       auto height = pixels.size();
       _data.reserve(_width * height);
-      size_t row_index = 0;
       for (auto const &input_row : pixels) {
-        auto row_span = row(row_index);
         _data.insert(end(_data), begin(input_row), end(input_row));
-        row_index++;
       }
     }
   }
@@ -93,3 +92,5 @@ class Image {
 };
 
 using ImageU8 = Image<uint8_t>;
+
+}
