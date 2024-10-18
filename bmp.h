@@ -17,7 +17,7 @@ static void write_basic(std::ofstream& stream, T t) {
   if constexpr (std::endian::native == std::endian::big) {
     t = byteswap(t);
   }
-  stream.write(reinterpret_cast<char*>(&t), sizeof(t));
+  stream.write(std::bit_cast<std::array<char, sizeof(T)>>(t).data(), sizeof(t));
 }
 
 constexpr size_t pixel_size = 3;
