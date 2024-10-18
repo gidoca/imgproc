@@ -46,10 +46,11 @@ static void write_pixel_row(std::ofstream& stream, T const& coll) {
 
 static void write_file_header(std::ofstream& stream, uint32_t filesize, uint32_t data_offset) {
     constexpr std::string_view header("BM");
+    constexpr uint32_t reserved = 0;
 
     stream << header;
     write_basic(stream, filesize);
-    write_basic<uint32_t>(stream, 0);
+    write_basic(stream, reserved);
     write_basic(stream, data_offset);
 }
 
