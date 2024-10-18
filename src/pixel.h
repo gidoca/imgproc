@@ -6,7 +6,7 @@ namespace pixel {
 
 template <typename T>
 struct unit_value {
-  static constexpr T value;
+  static constexpr T value{};
 };
 
 template <>
@@ -28,7 +28,7 @@ struct Pixel {
 
   T data[D];
 
-  bool operator==(Pixel<T, depth> const& other) const = default;
+  bool operator==(Pixel<T, D> const& other) const = default;
 };
 
 template <typename T>
