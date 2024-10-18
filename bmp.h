@@ -9,7 +9,7 @@
 
 namespace bmp {
 
-using Pixel = image::PixelU8RGB;
+using Pixel = pixel::PixelU8RGB;
 using Image = image::ImageU8RGB;
 
 template <typename T>

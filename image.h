@@ -5,32 +5,9 @@
 #include <span>
 #include <vector>
 
+#include "pixel.h"
+
 namespace image {
-
-template <typename T, size_t D>
-requires std::integral<T> || std::floating_point<T>
-struct Pixel {
-  using ElementType = T;
-
-  static constexpr size_t depth = D;
-
-  T data[D];
-
-  bool operator==(Pixel<T, D> const& other) const = default;
-};
-
-template <typename T>
-requires std::integral<T> || std::floating_point<T>
-struct PixelRGB : Pixel<T, 3> {
-  T& r() { return this->data[0]; }
-  T& g() { return this->data[1]; }
-  T& b() { return this->data[2]; }
-  T const& r() const { return this->data[0]; }
-  T const& g() const { return this->data[1]; }
-  T const& b() const { return this->data[2]; }
-};
-
-using PixelU8RGB = PixelRGB<uint8_t>;
 
 struct Dimension {
   size_t width;
@@ -125,6 +102,6 @@ class Image {
   size_t _width = 0;
 };
 
-using ImageU8RGB = Image<PixelU8RGB>;
+using ImageU8RGB = Image<pixel::PixelU8RGB>;
 
 }  // namespace image
