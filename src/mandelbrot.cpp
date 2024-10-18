@@ -57,8 +57,9 @@ ComplexImage calculate_mandelbrot(size_t num_iterations, Dimension dim) {
   return out;
 }
 
-int main(void) {
+int main(int argc, char** argv) {
   auto mandelbrot = tonemap(calculate_mandelbrot(300, Dimension{64, 64}));
-  std::ofstream outfile("mandelbrot.bmp", std::ios::binary | std::ios::out);
+  char const* filename = argc == 2 ? argv[1] : "mandelbrot.bmp";
+  std::ofstream outfile(filename, std::ios::binary | std::ios::out);
   bmp::write(outfile, mandelbrot);
 }
