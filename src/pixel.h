@@ -5,7 +5,6 @@
 namespace pixel {
 
 template <typename T, size_t D>
-// requires std::integral<T> || std::floating_point<T>
 struct Pixel {
   using ElementType = T;
 
@@ -32,11 +31,11 @@ struct Pixel<T, 1> {
   T data[1];
 
   bool operator==(Pixel<T, depth> const& other) const = default;
-  operator T() const { return data[0]; }
+  operator T const&() const { return data[0]; }
+  operator T&() { return data[0]; }
 };
 
 template <typename T>
-// requires std::integral<T> || std::floating_point<T>
 struct PixelRGB : Pixel<T, 3> {
   T& r() { return this->data[0]; }
   T& g() { return this->data[1]; }
