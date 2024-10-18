@@ -1,3 +1,5 @@
-add_executable(write_bmp write_bmp.cpp)
-add_executable(write_mandelbrot mandelbrot.cpp)
-add_executable(image_test image_test.cpp)
+set(IMAGE_SRCS bmp.cpp)
+
+add_executable(write_bmp ${IMAGE_SRCS} write_bmp.cpp)
+add_executable(write_mandelbrot ${IMAGE_SRCS} mandelbrot.cpp)
+add_executable(image_test ${IMAGE_SRCS} image_test.cpp)
