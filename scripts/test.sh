@@ -8,7 +8,7 @@ BINDIR="${BASEDIR}/bin"
 TESTDIR="${BASEDIR}/testdata"
 CURRENTTESTDIR="${TESTDIR}/current"
 
-cmake -B "${BUILDDIR}" .
+cmake -DCMAKE_BUILD_TYPE=Debug -B "${BUILDDIR}" .
 cmake --build "${BUILDDIR}"
 cmake --install "${BUILDDIR}" --prefix "${BASEDIR}"
 
@@ -17,6 +17,9 @@ diff "${CURRENTTESTDIR}/test.bmp" "${TESTDIR}/test.bmp"
 
 ${BINDIR}/write_mandelbrot "${CURRENTTESTDIR}/mandelbrot.bmp"
 diff "${CURRENTTESTDIR}/mandelbrot.bmp" "${TESTDIR}/mandelbrot.bmp"
+
+${BINDIR}/mirror_image
+diff "${CURRENTTESTDIR}/mandelbrot_mirrored.bmp" "${TESTDIR}/mandelbrot_mirrored.bmp"
 
 ${BINDIR}/image_test
 ${BINDIR}/image_iterator_test

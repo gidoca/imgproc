@@ -43,7 +43,7 @@ class Image {
       : _data(std::move(data)), _width(dim.width) {
     ASSERT(dim.num_elems() == _data.size(), "Expected " << dim.num_elems()
                                                         << " elements but got "
-                                                        << data.size());
+                                                        << _data.size());
   }
 
   Image(std::initializer_list<std::initializer_list<PixelType>> pixels) {
