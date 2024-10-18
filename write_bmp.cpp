@@ -5,9 +5,6 @@
 #include "bit_polyfill.h"
 #include "image.h"
 
-using std::begin;
-using std::end;
-
 namespace bmp {
 
 using Pixel = image::PixelU8;
