@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "bmp.h"
+#include "cmdline.h"
 #include "color_conversion.h"
 #include "colors.h"
 #include "image.h"
@@ -64,9 +65,18 @@ image::ImageF32HSV calculate_mandelbrot(size_t num_iterations, Dimension dim) {
   return out;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char const** argv) {
+  std::string filename;
+  const cmdline::options options{cmdline::make_option(
+      "-f", "--output-file", "The output BMP file", 1,
+      [&filename](auto const& arguments) { filename = arguments[0]; })};
+  if (!cmdline::parse(cmdline::input_arguments{argc, argv}, options)) {
+    return -1;
+  }
+
   auto mandelbrot = tonemap(calculate_mandelbrot(5000, Dimension{256, 256}));
-  char const* filename = argc == 2 ? argv[1] : "mandelbrot.bmp";
   std::ofstream outfile(filename, std::ios::binary | std::ios::out);
   bmp::write(outfile, mandelbrot);
+
+  return 0;
 }

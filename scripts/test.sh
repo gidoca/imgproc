@@ -15,7 +15,7 @@ cmake --install "${BUILDDIR}" --prefix "${BASEDIR}"
 ${BINDIR}/write_bmp "${CURRENTTESTDIR}/test.bmp"
 diff "${CURRENTTESTDIR}/test.bmp" "${TESTDIR}/test.bmp"
 
-${BINDIR}/write_mandelbrot "${CURRENTTESTDIR}/mandelbrot.bmp"
+${BINDIR}/write_mandelbrot -f "${CURRENTTESTDIR}/mandelbrot.bmp"
 diff "${CURRENTTESTDIR}/mandelbrot.bmp" "${TESTDIR}/mandelbrot.bmp"
 
 ${BINDIR}/mirror_image
