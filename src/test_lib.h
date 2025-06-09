@@ -18,6 +18,11 @@
         (callable), "Test expected exception, but did not throw: " #callable); \
   } while (false)
 
+#define TEST_FAIL()                            \
+  do {                                         \
+    test_assert(false, "Unexpectedly called"); \
+  } while (false)
+
 class TestFailureException final : public std::exception {
  public:
   TestFailureException(std::string_view msg = "") : message(msg) {}

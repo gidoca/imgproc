@@ -8,4 +8,5 @@ add_executable(ansi_color_test ${IMAGE_SRCS} ansi_color_test.cpp)
 add_executable(ansi_color ${IMAGE_SRCS} ansi_color_main.cpp)
 add_executable(read_bmp_test ${IMAGE_SRCS} read_bmp_test.cpp)
 add_executable(mirror_image ${IMAGE_SRCS} mirror_image.cpp)
+add_executable(cmdline_test cmdline.cpp cmdline_test.cpp)
 

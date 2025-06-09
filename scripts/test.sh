@@ -25,4 +25,4 @@ ${BINDIR}/image_test
 ${BINDIR}/image_iterator_test
 ${BINDIR}/ansi_color_test
 ${BINDIR}/read_bmp_test
-
+${BINDIR}/cmdline_test
