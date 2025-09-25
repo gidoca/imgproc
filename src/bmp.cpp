@@ -58,7 +58,9 @@ static void skip_padding(std::istream& stream, size_t n_bytes) {
 }
 
 static size_t calculate_padding(size_t count) {
-  return pixel_size * count % sizeof(uint32_t);
+  constexpr size_t padding_boundary = sizeof(uint32_t);
+  return (padding_boundary - (pixel_size * count % padding_boundary)) %
+         padding_boundary;
 }
 
 constexpr uint32_t data_offset = 54;
