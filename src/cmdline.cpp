@@ -103,7 +103,7 @@ std::optional<input_arguments> parse_step(input_arguments input,
       return call_callback(pop_result->new_input, option);
     }
   }
-  std::cerr << "Unknown option " << pop_result->popped_value;
+  std::cerr << "Unknown option " << pop_result->popped_value << std::endl;
   return std::nullopt;
 }
 

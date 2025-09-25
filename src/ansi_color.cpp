@@ -10,10 +10,10 @@ static void print_pixel(Pixel pixel, std::ostream& ostream) {
           << (unsigned)pixel.b_non_linear() << "m ";
 }
 
-static void reset(std::ostream& ostream) { ostream << "\033[0m"; }
+static void reset_term(std::ostream& ostream) { ostream << ansi_color::reset; }
 
 void print_image(Image const& image, std::ostream& ostream) {
-  reset(ostream);
+  reset_term(ostream);
 
   for (auto row : mirror_vert(view(image))) {
     for (auto pixel : row) {
@@ -22,7 +22,7 @@ void print_image(Image const& image, std::ostream& ostream) {
     ostream << "\n";
   }
 
-  reset(ostream);
+  reset_term(ostream);
   ostream.flush();
 }
 
