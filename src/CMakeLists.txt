@@ -1,4 +1,4 @@
-set(IMAGE_SRCS ansi_color.cpp bmp.cpp cmdline.cpp)
+set(IMAGE_SRCS ansi_color.cpp bmp.cpp cmdline.cpp ppm.cpp)
 
 add_executable(write_bmp ${IMAGE_SRCS} write_bmp.cpp)
 add_executable(write_mandelbrot ${IMAGE_SRCS} mandelbrot.cpp)
