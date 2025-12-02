@@ -23,6 +23,7 @@ diff "${CURRENTTESTDIR}/mandelbrot_mirrored.bmp" "${TESTDIR}/mandelbrot_mirrored
 
 ${BINDIR}/image_test
 ${BINDIR}/image_iterator_test
+${BINDIR}/bmp_cat -f "${TESTDIR}"/test.bmp
 ${BINDIR}/ansi_color_test
 ${BINDIR}/read_bmp_test
 ${BINDIR}/cmdline_test

@@ -19,7 +19,7 @@ void print_image(Image const& image, std::ostream& ostream) {
     for (auto pixel : row) {
       print_pixel(pixel, ostream);
     }
-    ostream << "\n";
+    ostream << ansi_color::reset << "\n";
   }
 
   reset_term(ostream);

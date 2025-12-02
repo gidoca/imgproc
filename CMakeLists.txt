@@ -7,4 +7,4 @@ SET(CMAKE_CXX_STANDARD_REQUIRED true)
 
 add_subdirectory(src)
 
-install(TARGETS write_bmp write_mandelbrot image_test image_iterator_test ansi_color_test ansi_color read_bmp_test mirror_image cmdline_test bmp_cat DESTINATION bin)
+install(TARGETS write_bmp write_mandelbrot image_test image_iterator_test ansi_color_test read_bmp_test mirror_image cmdline_test bmp_cat DESTINATION bin)
