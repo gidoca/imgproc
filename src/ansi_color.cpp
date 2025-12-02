@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "base64.h"
+
 namespace ansi_color {
 
 static void print_pixel(Pixel pixel, std::ostream& ostream) {
@@ -12,7 +14,7 @@ static void print_pixel(Pixel pixel, std::ostream& ostream) {
 
 static void reset_term(std::ostream& ostream) { ostream << ansi_color::reset; }
 
-void print_image(Image const& image, std::ostream& ostream) {
+/*void print_image(Image const& image, std::ostream& ostream) {
   reset_term(ostream);
 
   for (auto row : mirror_vert(view(image))) {
@@ -21,6 +23,25 @@ void print_image(Image const& image, std::ostream& ostream) {
     }
     ostream << ansi_color::reset << "\n";
   }
+
+  reset_term(ostream);
+  ostream.flush();
+}*/
+
+void print_image(Image const& image, std::ostream& ostream) {
+  reset_term(ostream);
+
+  ostream << "\e_G" << "a=T,f=24," << "s=" << image.width()
+          << ",v=" << image.height() << ";";
+
+  {
+    base64::Writer writer{[&ostream](auto c) { ostream << c; }};
+    for (auto pixel : image.pixels()) {
+      writer.write(pixel.data);
+    }
+  }
+
+  ostream << "\e\\";
 
   reset_term(ostream);
   ostream.flush();
