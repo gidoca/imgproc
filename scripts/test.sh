@@ -27,3 +27,4 @@ ${BINDIR}/bmp_cat -f "${TESTDIR}"/test.bmp
 ${BINDIR}/ansi_color_test
 ${BINDIR}/read_bmp_test
 ${BINDIR}/cmdline_test
+${BINDIR}/base64_test

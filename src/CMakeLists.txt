@@ -1,4 +1,4 @@
-set(IMAGE_SRCS ansi_color.cpp bmp.cpp cmdline.cpp ppm.cpp terminal.cpp)
+set(IMAGE_SRCS ansi_color.cpp base64.cpp bmp.cpp cmdline.cpp ppm.cpp terminal.cpp)
 
 add_executable(write_bmp ${IMAGE_SRCS} write_bmp.cpp)
 add_executable(write_mandelbrot ${IMAGE_SRCS} mandelbrot.cpp)
@@ -9,3 +9,4 @@ add_executable(read_bmp_test ${IMAGE_SRCS} read_bmp_test.cpp)
 add_executable(mirror_image ${IMAGE_SRCS} mirror_image.cpp)
 add_executable(cmdline_test ${IMAGE_SRCS} cmdline_test.cpp)
 add_executable(bmp_cat ${IMAGE_SRCS} bmp_cat.cpp)
+add_executable(base64_test ${IMAGE_SRCS} base64_test.cpp)

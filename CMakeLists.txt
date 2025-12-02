@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 
 project(ImageProc)
 
-SET(CMAKE_CXX_STANDARD 20)
+SET(CMAKE_CXX_STANDARD 23)
 SET(CMAKE_CXX_STANDARD_REQUIRED true)
 
 add_subdirectory(src)
 
-install(TARGETS write_bmp write_mandelbrot image_test image_iterator_test ansi_color_test read_bmp_test mirror_image cmdline_test bmp_cat DESTINATION bin)
+install(TARGETS write_bmp write_mandelbrot image_test image_iterator_test ansi_color_test read_bmp_test mirror_image cmdline_test bmp_cat base64_test DESTINATION bin)
