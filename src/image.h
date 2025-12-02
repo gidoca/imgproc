@@ -8,18 +8,11 @@
 #include <vector>
 
 #include "assert.h"
+#include "dimension.h"
 #include "pixel.h"
 
 namespace image {
-
-struct Dimension {
-  size_t width;
-  size_t height;
-
-  bool operator==(Dimension const& other) const = default;
-
-  size_t num_elems() const { return width * height; }
-};
+using Dimension = dimension::Dimension;
 
 struct Coordinate {
   size_t x;
