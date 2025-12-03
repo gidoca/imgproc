@@ -42,6 +42,12 @@ PixelIterator<P> operator++(PixelIterator<P>& it, int) {
 }
 
 template <typename P>
+PixelIterator<P>& operator+=(PixelIterator<P>& it, int i) {
+  it.current_pos += i * it.stride;
+  return it;
+}
+
+template <typename P>
 P const& operator*(PixelIterator<P> const& it) {
   return it.pixel_buffer[it.current_pos];
 }
@@ -87,6 +93,12 @@ RowIterator<P> operator++(RowIterator<P>& it, int) {
 }
 
 template <typename P>
+RowIterator<P>& operator+=(RowIterator<P>& it, int i) {
+  it.current_pos += i * it.column_stride;
+  return it;
+}
+
+template <typename P>
 RowIterator<P>& operator--(RowIterator<P>& it) {
   ASSERT(
       it.current_pos >= it.column_stride,
@@ -104,6 +116,12 @@ struct RowView {
   std::size_t start_pos;
   difference_type stride;
   std::size_t end_pos;
+
+  PixelIterator<const P> cbegin() const {
+    return {pixel_buffer, start_pos, stride, end_pos};
+  }
+
+  PixelIterator<const P> cend() const { return {}; }
 
   PixelIterator<P> begin() const {
     return {pixel_buffer, start_pos, stride, end_pos};
@@ -154,6 +172,19 @@ struct ImageView {
   Dimension dimension() {
     return {.width = row_data_count, .height = column_data_count};
   }
+
+  P at(Coordinate c) {
+    ASSERT(c.x < row_data_count, "Coordinate x is larger than the image view");
+    ASSERT(c.y < column_data_count,
+           "Coordinate y is larger than the image view");
+    auto rowIt = cbegin();
+    rowIt += c.y;
+    auto colIt = (*rowIt).cbegin();
+    colIt += c.x;
+    return *colIt;
+  }
+
+  P at(size_t x, size_t y) { return at({x, y}); }
 };
 
 template <typename I>

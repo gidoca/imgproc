@@ -36,8 +36,10 @@ void print_image(Image const& image, std::ostream& ostream) {
 
   {
     base64::Writer writer{[&ostream](auto c) { ostream << c; }};
-    for (auto pixel : image.pixels()) {
-      writer.write(pixel.data);
+    for (auto row : mirror_vert(view(image))) {
+      for (auto pixel : row) {
+        writer.write(pixel.data);
+      }
     }
   }
 

@@ -55,6 +55,7 @@ int main(int argc, const char** argv) {
     auto images = read(files);
     for (auto const& image : images) {
       ansi_color::print_image(image, std::cout);
+      std::cout << std::endl;
     }
   } catch (std::exception const& e) {
     std::cerr << ansi_color::red << "Error: " << e.what() << ansi_color::reset

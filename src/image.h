@@ -9,17 +9,11 @@
 
 #include "assert.h"
 #include "dimension.h"
+#include "image_coordinate.h"
 #include "pixel.h"
 
 namespace image {
 using Dimension = dimension::Dimension;
-
-struct Coordinate {
-  size_t x;
-  size_t y;
-
-  bool operator==(Coordinate const& other) const = default;
-};
 
 template <typename P>
 class Image {

@@ -12,10 +12,12 @@ static void test_image_iterate() {
                                   {{0xFF, 0x0, 0xFF}, {0x0, 0xFF, 0xFF}}};
   size_t y = 0;
 
-  for (auto row : view(data)) {
+  auto v = view(data);
+  for (auto row : v) {
     size_t x = 0;
     for (auto pixel : row) {
-      TEST_ASSERT((data.at(x, y) == pixel));
+      TEST_ASSERT(data.at(x, y) == pixel);
+      TEST_ASSERT(data.at(x, y) == v.at({x, y}));
       x++;
     }
     y++;
