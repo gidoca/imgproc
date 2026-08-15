@@ -231,8 +231,18 @@ ImageView<P> mirror_vert(ImageView<P> view) {
 }
 
 template <typename P>
-Image<P> to_image(ImageView<P> view) {
-  std::vector<P> pixels;
+ImageView<P> integer_downsample(uint32_t scale_factor, ImageView<P> view) {
+  return {.pixel_buffer = view.pixel_buffer,
+          .start_pos = view.start_pos,
+          .row_stride = view.row_stride * scale_factor,
+          .row_data_count = view.row_data_count / scale_factor,
+          .column_stride = view.column_stride * scale_factor,
+          .column_data_count = view.column_data_count / scale_factor};
+}
+
+template <typename P>
+Image<typename std::remove_cv_t<P>> to_image(ImageView<P> view) {
+  std::vector<std::remove_cv_t<P>> pixels;
   const auto dimension = view.dimension();
   pixels.reserve(dimension.num_elems());
 

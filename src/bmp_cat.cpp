@@ -6,6 +6,7 @@
 #include "ansi_color.h"
 #include "bmp.h"
 #include "cmdline.h"
+#include "terminal.h"
 
 std::vector<bmp::Image> read(std::vector<std::string> const& files) {
   if (files.empty()) {
@@ -53,8 +54,13 @@ int main(int argc, const char** argv) {
 
   try {
     auto images = read(files);
+    auto terminal_size = terminal::pixel_size();
     for (auto const& image : images) {
-      ansi_color::print_image(image, std::cout);
+      uint32_t scale_factor = std::max(image.height() / terminal_size.height,
+                                       image.width() / terminal_size.width) +
+                              1;
+      ansi_color::print_image(
+          to_image(integer_downsample(scale_factor, view(image))), std::cout);
       std::cout << std::endl;
     }
   } catch (std::exception const& e) {
