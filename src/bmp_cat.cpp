@@ -32,7 +32,7 @@ int main(int argc, const char** argv) {
                   "-h", "--help", "Show help",
                   [] {
                     std::cout
-                        << "Usage: bmp_cat [FILE]...\n"
+                        << "Usage: bmp_cat -f [FILE]...\n"
                         << "Print BMP files as ANSI color to standard output.\n"
                         << "\n"
                         << "If no FILE is given, read from standard input."
